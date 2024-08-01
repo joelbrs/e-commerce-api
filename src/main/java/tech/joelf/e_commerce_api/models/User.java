@@ -15,6 +15,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    private String name;
     private String phone;
     private LocalDate birthDate;
     private String password;
@@ -28,6 +29,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getPhone() {
