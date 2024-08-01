@@ -44,4 +44,8 @@ public class ProductService {
 
         return modelMapper.map(productRepository.save(product), ProductDtoOut.class);
     }
+
+    public void delete(Long id) {
+        productRepository.deleteById(id);
+    }
 }

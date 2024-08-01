@@ -42,4 +42,10 @@ public class ProductController {
     public ResponseEntity<ProductDtoOut> update(@PathVariable Long id, @RequestBody(required = true) ProductDtoIn dto) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.update(id, dto));
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        productService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
