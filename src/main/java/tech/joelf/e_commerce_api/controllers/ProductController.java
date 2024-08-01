@@ -2,6 +2,10 @@ package tech.joelf.e_commerce_api.controllers;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import tech.joelf.e_commerce_api.dtos.request.ProductDtoIn;
@@ -19,17 +23,18 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}")
-    public ProductDtoOut getById(@PathVariable Long id) throws Exception {
-        return productService.getById(id);
+    public ResponseEntity<ProductDtoOut> getById(@PathVariable Long id) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getById(id));
     }
 
     @GetMapping
-    public Page<ProductDtoOut> findAllPaged(Pageable pageable, @RequestParam(required = false) String name) {
-        return productService.findAllPaged(pageable, name);
+    public ResponseEntity<Page<ProductDtoOut>> findAllPaged(Pageable pageable,
+            @RequestParam(required = false) String name) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findAllPaged(pageable, name));
     }
 
     @PostMapping
-    public ProductDtoOut create(@RequestBody(required = true) ProductDtoIn dto) {
-        return productService.create(dto);
+    public ResponseEntity<ProductDtoOut> create(@RequestBody(required = true) ProductDtoIn dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(dto));
     }
 }
