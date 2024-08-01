@@ -1,5 +1,7 @@
 package tech.joelf.e_commerce_api.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import tech.joelf.e_commerce_api.dtos.response.ProductDtoOut;
@@ -18,5 +20,10 @@ public class ProductController {
     @GetMapping(value = "/{id}")
     public ProductDtoOut getById(@PathVariable Long id) throws Exception {
         return productService.getById(id);
+    }
+
+    @GetMapping
+    public Page<ProductDtoOut> findAllPaged(Pageable pageable, @RequestParam(required = false) String name) {
+        return this.productService.findAllPaged(pageable, name);
     }
 }

@@ -1,6 +1,8 @@
 package tech.joelf.e_commerce_api.services;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import tech.joelf.e_commerce_api.dtos.response.ProductDtoOut;
@@ -20,5 +22,10 @@ public class ProductService {
     public ProductDtoOut getById(Long id) throws Exception {
         var result = productRepository.findById(id).orElseThrow(() -> new Exception("Product not found."));
         return modelMapper.map(result, ProductDtoOut.class);
+    }
+
+    public Page<ProductDtoOut> findAllPaged(Pageable pageable, String name) {
+        var result = this.productRepository.findAllPagedByName(pageable, name);
+        return result.map(p -> modelMapper.map(p, ProductDtoOut.class));
     }
 }
