@@ -3,6 +3,7 @@ package tech.joelf.e_commerce_api.models;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -56,6 +57,10 @@ public class Order {
 
     public Set<OrderItem> getItems() {
         return Collections.unmodifiableSet(items);
+    }
+
+    public List<Product> getProducts() {
+        return Collections.unmodifiableList(items.stream().map(item -> item.getProduct()).toList());
     }
 
     @Override
