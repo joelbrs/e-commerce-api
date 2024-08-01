@@ -1,6 +1,7 @@
 package tech.joelf.e_commerce_api.services;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,12 @@ public class ProductService {
     public ProductDtoOut create(ProductDtoIn dto) {
         var result = productRepository.save(modelMapper.map(dto, Product.class));
         return modelMapper.map(result, ProductDtoOut.class);
+    }
+
+    public ProductDtoOut update(Long id, ProductDtoIn dto) {
+        var product = productRepository.getReferenceById(id);
+        BeanUtils.copyProperties(modelMapper.map(dto, Product.class), product, "id");
+
+        return modelMapper.map(productRepository.save(product), ProductDtoOut.class);
     }
 }
