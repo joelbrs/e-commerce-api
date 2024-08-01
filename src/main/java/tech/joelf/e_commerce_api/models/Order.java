@@ -1,6 +1,9 @@
 package tech.joelf.e_commerce_api.models;
 
 import java.time.Instant;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -25,6 +28,9 @@ public class Order {
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
 
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
+
     public Order() {
     }
 
@@ -46,6 +52,10 @@ public class Order {
 
     public Payment getPayment() {
         return payment;
+    }
+
+    public Set<OrderItem> getItems() {
+        return Collections.unmodifiableSet(items);
     }
 
     @Override
