@@ -4,11 +4,9 @@ import java.time.Instant;
 
 import jakarta.persistence.*;
 
-import tech.joelf.e_commerce_api.enums.OrderStatus;
-
 @Entity
-@Table(name = "tb_order")
-public class Order {
+@Table(name = "tb_payment")
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,16 +14,12 @@ public class Order {
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant moment;
-    private OrderStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User client;
+    @OneToOne
+    @MapsId
+    private Order order;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    private Payment payment;
-
-    public Order() {
+    public Payment() {
     }
 
     public Long getId() {
@@ -36,16 +30,8 @@ public class Order {
         return moment;
     }
 
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public User getClient() {
-        return client;
-    }
-
-    public Payment getPayment() {
-        return payment;
+    public Order getOrder() {
+        return order;
     }
 
     @Override
@@ -64,7 +50,7 @@ public class Order {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Order other = (Order) obj;
+        Payment other = (Payment) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
