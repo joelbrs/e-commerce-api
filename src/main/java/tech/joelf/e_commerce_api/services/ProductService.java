@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import tech.joelf.e_commerce_api.dtos.request.ProductDtoIn;
 import tech.joelf.e_commerce_api.dtos.response.ProductDtoOut;
-
+import tech.joelf.e_commerce_api.exceptions.ResourceNotFoundException;
 import tech.joelf.e_commerce_api.models.Product;
 import tech.joelf.e_commerce_api.repositories.ProductRepository;
 
@@ -23,8 +23,9 @@ public class ProductService {
         this.modelMapper = modelMapper;
     }
 
-    public ProductDtoOut getById(Long id) throws Exception {
-        var result = productRepository.findById(id).orElseThrow(() -> new Exception("Product not found."));
+    public ProductDtoOut getById(Long id) {
+        var result = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
         return modelMapper.map(result, ProductDtoOut.class);
     }
 

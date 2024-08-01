@@ -23,7 +23,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDtoOut> getById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<ProductDtoOut> getById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getById(id));
     }
 
