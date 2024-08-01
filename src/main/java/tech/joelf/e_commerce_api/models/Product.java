@@ -57,6 +57,10 @@ public class Product {
         return Collections.unmodifiableSet(items);
     }
 
+    public List<Order> getOrders() {
+        return Collections.unmodifiableList(items.stream().map(item -> item.getOrder()).toList());
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
