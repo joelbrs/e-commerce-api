@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import tech.joelf.e_commerce_api.dtos.request.ProductDtoIn;
 import tech.joelf.e_commerce_api.dtos.response.ProductDtoOut;
 import tech.joelf.e_commerce_api.services.ProductService;
 
@@ -24,6 +25,11 @@ public class ProductController {
 
     @GetMapping
     public Page<ProductDtoOut> findAllPaged(Pageable pageable, @RequestParam(required = false) String name) {
-        return this.productService.findAllPaged(pageable, name);
+        return productService.findAllPaged(pageable, name);
+    }
+
+    @PostMapping
+    public ProductDtoOut create(@RequestBody(required = true) ProductDtoIn dto) {
+        return productService.create(dto);
     }
 }

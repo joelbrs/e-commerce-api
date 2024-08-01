@@ -5,7 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import tech.joelf.e_commerce_api.dtos.request.ProductDtoIn;
 import tech.joelf.e_commerce_api.dtos.response.ProductDtoOut;
+
+import tech.joelf.e_commerce_api.models.Product;
 import tech.joelf.e_commerce_api.repositories.ProductRepository;
 
 @Service
@@ -25,7 +28,12 @@ public class ProductService {
     }
 
     public Page<ProductDtoOut> findAllPaged(Pageable pageable, String name) {
-        var result = this.productRepository.findAllPagedByName(pageable, name);
+        var result = productRepository.findAllPagedByName(pageable, name);
         return result.map(p -> modelMapper.map(p, ProductDtoOut.class));
+    }
+
+    public ProductDtoOut create(ProductDtoIn dto) {
+        var result = productRepository.save(modelMapper.map(dto, Product.class));
+        return modelMapper.map(result, ProductDtoOut.class);
     }
 }

@@ -61,6 +61,22 @@ public class Product {
         return Collections.unmodifiableList(items.stream().map(item -> item.getOrder()).toList());
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
