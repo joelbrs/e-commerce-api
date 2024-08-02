@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,8 +18,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ResponseException> handleNotFound(HttpServletRequest request, ResourceNotFoundException ex) {
-
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        var status = HttpStatus.NOT_FOUND;
 
         return ResponseEntity.status(status)
                 .body(new ResponseException(Instant.now(), status.value(), ex.getMessage(), request.getRequestURI()));
@@ -26,19 +26,25 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<ResponseException> handleDatabase(HttpServletRequest request,
-            ResourceNotFoundException ex) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+            DatabaseException ex) {
+        var status = HttpStatus.BAD_REQUEST;
 
         return ResponseEntity.status(status)
                 .body(new ResponseException(Instant.now(), status.value(), ex.getMessage(), request.getRequestURI()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ResponseException> handleArgumentNotValid(HttpServletRequest request,
-            ResourceNotFoundException ex) {
-        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+    public ResponseEntity<ValidationException> handleArgumentNotValid(HttpServletRequest request,
+            MethodArgumentNotValidException ex) {
 
-        return ResponseEntity.status(status)
-                .body(new ResponseException(Instant.now(), status.value(), ex.getMessage(), request.getRequestURI()));
+        var status = HttpStatus.UNPROCESSABLE_ENTITY;
+        var exception = new ValidationException(Instant.now(), status.value(), "Invalid data.",
+                request.getRequestURI());
+
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            exception.addError(error.getField(), error.getDefaultMessage());
+        }
+
+        return ResponseEntity.status(status).body(exception);
     }
 }
