@@ -1,9 +1,18 @@
 package tech.joelf.e_commerce_api.dtos.request;
 
+import jakarta.validation.constraints.*;
+
 public class ProductDtoIn {
 
+    @NotBlank(message = "Required field.")
+    @Size(min = 3, max = 80, message = "Name should have at least 3 characters and 80 max characters.")
     private String name;
+
+    @NotBlank(message = "Required field.")
+    @Size(min = 10, message = "Description should have at least 10 characters")
     private String description;
+
+    @Positive(message = "Price should be positive.")
     private Double price;
     private String imgUrl;
 
